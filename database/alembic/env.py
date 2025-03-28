@@ -1,5 +1,5 @@
 from logging.config import fileConfig
- 
+
 from sqlalchemy import create_engine, pool
 
 from alembic import context
@@ -10,6 +10,9 @@ from models import (
     Tag,
     product_tag,
 )
+
+from settings import MIGRATION_DB_URL
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -21,7 +24,6 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
-DB_URL = "sqlite:///./database.sqlite3"
 
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
@@ -30,7 +32,7 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    migration_engine = create_engine(DB_URL, poolclass=pool.NullPool)
+    migration_engine = create_engine(MIGRATION_DB_URL, poolclass=pool.NullPool)
     with migration_engine.connect() as connection:
         context.configure(
             connection=connection,

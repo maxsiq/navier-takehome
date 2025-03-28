@@ -5,7 +5,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import Uuid
 
 
-
 class Tag(Base):
     __tablename__ = "tag"
     id: Mapped[uuid.UUID] = mapped_column(default=uuid.uuid4, primary_key=True)

@@ -20,14 +20,14 @@ class ProductService:
             description=product_data.description,
             price=product_data.price,
             in_stock=product_data.in_stock,
-            tags=tags
+            tags=tags,
         )
 
         self.session.add(new_product)
         await self.session.commit()
         await self.session.refresh(new_product)
         return new_product
-    
+
     async def get_product(self, product_id: str) -> Product | None:
         try:
             uuid.UUID(product_id)  # validate UUID format
@@ -37,20 +37,24 @@ class ProductService:
         if product is None:
             raise HTTPException(status_code=404, detail="Product not found")
         return product
-    
-    async def list_products(self, tag_filter: str | None=None, in_stock_filter: bool=False) -> list[Product]:
+
+    async def list_products(
+        self, tag_filter: str | None = None, in_stock_filter: bool = False
+    ) -> list[Product]:
         query = select(Product)
-        
+
         if tag_filter:
             query = query.join(Product.tags).where(Tag.name == tag_filter)
-        
+
         if in_stock_filter:
             query = query.where(Product.in_stock.is_(True))
-        
+
         result = await self.session.execute(query)
         return result.scalars().all()
-    
-    async def update_product(self, product_id: str, product_update: ProductUpdateRequest) -> Product:
+
+    async def update_product(
+        self, product_id: str, product_update: ProductUpdateRequest
+    ) -> Product:
         product = await self.get_product(product_id)
         if product is None:
             raise HTTPException(status_code=404, detail="Product not found")
@@ -68,14 +72,13 @@ class ProductService:
         await self.session.commit()
         await self.session.refresh(product)
         return product
-    
+
     async def delete_product(self, product_id: str) -> None:
         product = await self.get_product(product_id)
         if product is None:  # no error if product not found
             return
         await self.session.delete(product)
         await self.session.commit()
-        
 
     async def _get_or_create_tags(self, tag_names: list[str]) -> list[Tag]:
         tags = []

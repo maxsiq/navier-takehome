@@ -1,4 +1,5 @@
 SERVICE = navier_takehome
+TEST_DB = test_database.sqlite3
 
 shell:
 	docker exec -it $(SERVICE) /sh
@@ -13,7 +14,10 @@ downgrade:
 	docker exec -it $(SERVICE) alembic downgrade -1
 
 test:
-	docker exec -it $(SERVICE) pytest -vv --disable-pytest-warnings
+	docker exec -it $(SERVICE) pytest -vv
+
+format:
+	docker exec $(SERVICE) black .
 
 help:
 	@echo "Available commands:"

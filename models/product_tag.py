@@ -6,4 +6,4 @@ product_tag = Table(
     Base.metadata,
     Column("product_id", ForeignKey("product.id"), primary_key=True),
     Column("tag_id", ForeignKey("tag.id"), primary_key=True),
-)    
+)

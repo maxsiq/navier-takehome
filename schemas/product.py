@@ -5,9 +5,6 @@ from typing import List, Optional
 class TagResponse(BaseModel):
     name: str
 
-    class Config:
-        from_attributes = True  # Enables serialization from SQLAlchemy models
-
 
 class ProductSchema(BaseModel):
     name: str = Field(...)
@@ -15,9 +12,6 @@ class ProductSchema(BaseModel):
     price: float = Field(..., gt=0)
     in_stock: bool = Field(default=True)
     tags: Optional[List[str]] = Field()
-
-    class Config:
-        from_attributes = True
 
 
 class ProductCreateRequest(ProductSchema):

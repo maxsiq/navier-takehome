@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: navier_takehome
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on: []

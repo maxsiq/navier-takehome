@@ -16,6 +16,7 @@ async def list_products(
     in_stock: bool = False,
     session: AsyncSession = Depends(Database().get_session),
 ):
+    """ list all products with optional filters for tags and in-stock status """
     products = await ProductService(session).list_products(
         tag_filter=tag, in_stock_filter=in_stock
     )
